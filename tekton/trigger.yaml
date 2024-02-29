@@ -1,0 +1,56 @@
+# From https://github.com/parodos-dev/red-hat-developer-hub-software-templates/blob/tekton-demo/skeletons/tekton/tekton/eventlistener.yaml
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: demoprep-run-pipeline
+  namespace: sonataflow-infra
+spec:
+  params:
+    - name: git-revision
+      description: The git revision
+      default: main
+    - name: git-repo-url
+      description: The repo url
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1
+      kind: PipelineRun
+      metadata:
+        name: demoprep-pipeline-$(uid)
+        labels:
+          backstage.io/kubernetes-id: demoprep-ci
+      spec:
+        params:
+          - name: gitUrl
+            value: git@github.com:parodos-dev/demoprep.git
+          - name: gitConfigUrl
+            value: git@github.com:parodos-dev/demoprep-config.git
+          - name: workflowId
+            value: demoprep
+          - name: convertToFlat
+            value: 'true'
+        pipelineRef:
+          name: workflow-deployment
+        workspaces:
+          - name: workflow-source
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi
+          - name: workflow-config
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi
+          - name: docker-credentials
+            secret:
+              secretName: docker-credentials
+          - name: ssh-creds
+            secret:
+              secretName: git-ssh-credentials

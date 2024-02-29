@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: demoprep
+  description: demoprep
+  annotations:
+    backstage.io/kubernetes-namespace: sonataflow-infra
+    backstage.io/kubernetes-id: demoprep-ci
+    janus-idp.io/tekton: demoprep
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: parodos-dev/demoprep
+spec:
+  type: workflow-project
+  system: system:default/janus-orchestrator
+  lifecycle: development
+  owner: user:default/guest

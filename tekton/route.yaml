@@ -1,0 +1,21 @@
+# From https://github.com/parodos-dev/red-hat-developer-hub-software-templates/blob/tekton-demo/skeletons/tekton/tekton/eventlistener.yaml
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: webhook-demoprep-el
+  namespace: sonataflow-infra
+  labels:
+    app.kubernetes.io/managed-by: EventListener
+    app.kubernetes.io/part-of: Triggers
+    eventlistener: demoprep-el
+spec:
+  to:
+    kind: Service
+    name: el-demoprep-el
+    weight: 100
+  port:
+    targetPort: http-listener
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
