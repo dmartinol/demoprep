@@ -1,6 +1,6 @@
 # demoprep
 
-demoprep - go!
+demoprep - go! (again...)
 
 ## Prerequisites
 * Java 11+ is installed.
