@@ -5,8 +5,6 @@ name: Deploy the Pipeline trigger manifests workflow
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ "main" ]
 jobs:
   deploy:
     name: Deploy
