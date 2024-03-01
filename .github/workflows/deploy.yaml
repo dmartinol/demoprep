@@ -17,7 +17,8 @@ jobs:
           echo $(date) > tekton/trigger
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           git config --global user.name "${{ github.actor }}"
-          git commit -a -m "Trigger tekton"
+          git add tekton/trigger
+          git commit -m "Trigger tekton"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
