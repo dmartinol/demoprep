@@ -10,16 +10,24 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+      - name: Commit a trigger
+        run: |
+          echo $(date) > tekton/trigger
+          git commit -a -m "Trigger tekton"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+
       - name: Set the Kubernetes context
         uses: azure/k8s-set-context@v2
         with:
           method: service-account
           k8s-url: ${{ secrets.K8S_CLUSTER_URL }}
           k8s-secret: ${{ secrets.K8S_SECRET }}
-
-      - name: Checkout source code
-        uses: actions/checkout@v3
-
       - name: Deploy to the Kubernetes cluster
         uses: azure/k8s-deploy@v1
         with:
